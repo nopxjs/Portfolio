@@ -56,6 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
+  List indexappbar = [false, false, false];
   // This function is triggered when the user presses the back-to-top button
   void _scrollToTop() {
     _scrollController.animateTo(0,
@@ -119,12 +120,24 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: [
                         InkWell(
                           onTap: () => _scrollToAboutMe(),
-                          child: const Text(
+                          onHover: (value) {
+                            setState(() {
+                              if (value) {
+                                indexappbar[0] = true;
+                              } else {
+                                indexappbar[0] = false;
+                              }
+                            });
+                          },
+                          child: Text(
                             'About me',
                             style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w200),
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: !indexappbar[0]
+                                  ? FontWeight.w200
+                                  : FontWeight.bold,
+                            ),
                           ),
                         ),
                         const SizedBox(
@@ -132,12 +145,24 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         InkWell(
                           onTap: _scrollToServices,
-                          child: const Text(
+                          onHover: (value) {
+                            setState(() {
+                              if (value) {
+                                indexappbar[1] = true;
+                              } else {
+                                indexappbar[1] = false;
+                              }
+                            });
+                          },
+                          child: Text(
                             'Services',
                             style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w200),
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: !indexappbar[1]
+                                  ? FontWeight.w200
+                                  : FontWeight.bold,
+                            ),
                           ),
                         ),
                         const SizedBox(
@@ -145,12 +170,24 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         InkWell(
                           onTap: _scrollToContactrMe,
-                          child: const Text(
+                          onHover: (value) {
+                            setState(() {
+                              if (value) {
+                                indexappbar[2] = true;
+                              } else {
+                                indexappbar[2] = false;
+                              }
+                            });
+                          },
+                          child: Text(
                             'Contact me',
                             style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w200),
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: !indexappbar[2]
+                                  ? FontWeight.w200
+                                  : FontWeight.bold,
+                            ),
                           ),
                         )
                       ],
@@ -579,6 +616,7 @@ class _MyHomePageState extends State<MyHomePage> {
               text,
               style: const TextStyle(
                 fontSize: 36,
+                letterSpacing: 2,
                 color: Color.fromARGB(255, 87, 87, 87),
               ),
             ),
@@ -592,6 +630,8 @@ class _MyHomePageState extends State<MyHomePage> {
   double gh = 64;
   double w = 165;
   double h = 64;
+  var hover = false;
+  var ghover = false;
   InkWell myBtn(isGreen, text, onTap) {
     return InkWell(
       onTap: onTap,
@@ -619,6 +659,7 @@ class _MyHomePageState extends State<MyHomePage> {
         duration: const Duration(seconds: 1),
         curve: Curves.easeInOutBack,
         decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
             color:
                 isGreen ? Colors.green : const Color.fromARGB(255, 23, 23, 23),
             border:
