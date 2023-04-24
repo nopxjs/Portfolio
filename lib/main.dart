@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -375,9 +377,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        card(false, 'Software Development', 'weird'),
-                        card(true, 'Web Devlopment', 'dev'),
-                        card(false, 'Game Devlopment', 'a'),
+                        card(card1[2], 'Software Development', 'weird'),
+                        card(card2[2], 'Web Devlopment', 'dev'),
+                        card(card3[2], 'Game Devlopment', 'a'),
                       ],
                     ),
                     const SizedBox(
@@ -508,81 +510,150 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-}
 
-InkWell myBtn(isGreen, text, onTap) {
-  return InkWell(
-    onTap: onTap,
-    child: Container(
+  List card1 = [350, 241, false];
+  List card2 = [350, 241, false];
+  List card3 = [350, 241, false];
+
+  AnimatedContainer card(border, text, type) {
+    return AnimatedContainer(
+      duration: const Duration(seconds: 1),
+      curve: Curves.easeInOutBack,
+      padding: const EdgeInsets.all(40),
+      alignment: Alignment.centerLeft,
+      // width: !isHover ? 350 : 400,
+      // height: !isHover ? 241 : 291,
+      width: type == 'dev'
+          ? card2[0]
+          : type == 'weird'
+              ? card1[0]
+              : card3[0],
+      height: type == 'dev'
+          ? card2[1]
+          : type == 'weird'
+              ? card1[1]
+              : card3[1],
+
       decoration: BoxDecoration(
-          color: isGreen ? Colors.green : const Color.fromARGB(255, 23, 23, 23),
-          border:
-              Border.all(color: Colors.white, width: !isGreen ? 1.5 : 0.01)),
-      alignment: Alignment.center,
-      width: 165,
-      height: 64,
-      child: Text(
-        text.toString(),
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-            color: Colors.white, fontSize: 20, fontWeight: FontWeight.w200),
+        color: const Color.fromARGB(255, 35, 35, 35),
+        border: BorderDirectional(
+          bottom: BorderSide(
+            color: Colors.green,
+            width: border ? 5 : 0.01,
+          ),
+        ),
       ),
-    ),
-  );
-}
+      child: InkWell(
+        onTap: () {},
+        onHover: (value) {
+          setState(() {
+            if (value && type == 'weird') {
+              card1[0] += 20;
+              card1[1] += 20;
+              card1[2] = true;
+            } else if (value && type == "dev") {
+              card2[0] += 20;
+              card2[1] += 20;
+              card2[2] = true;
+            } else if (value && type == 'a') {
+              card3[0] += 20;
+              card3[1] += 20;
+              card3[2] = true;
+            } else {
+              card1 = [350, 241, false];
+              card2 = [350, 241, false];
+              card3 = [350, 241, false];
+            }
+          });
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            type == 'dev'
+                ? Image.asset('assets/Vector.png')
+                : type == 'weird'
+                    ? Image.asset('assets/Vector1.png')
+                    : Image.asset('assets/Vector2.png'),
+            Text(
+              text,
+              style: const TextStyle(
+                fontSize: 36,
+                color: Color.fromARGB(255, 87, 87, 87),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
-AnimatedContainer kora() {
-  return AnimatedContainer(
-    duration: const Duration(seconds: 2),
-    alignment: Alignment.center,
-    width: 82,
-    height: 82,
-    decoration: const BoxDecoration(
-      shape: BoxShape.circle,
-      color: Color.fromARGB(255, 35, 35, 35),
-    ),
-    child: Container(
-      width: 18,
-      height: 18,
+  double gw = 165;
+  double gh = 64;
+  double w = 165;
+  double h = 64;
+  InkWell myBtn(isGreen, text, onTap) {
+    return InkWell(
+      onTap: onTap,
+      onHover: (value) {
+        if (value && isGreen) {
+          setState(() {
+            gh += 10;
+            gw += 10;
+          });
+        } else if (value && !isGreen) {
+          setState(() {
+            h += 10;
+            w += 10;
+          });
+        } else {
+          setState(() {
+            gw = 165;
+            gh = 64;
+            w = 165;
+            h = 64;
+          });
+        }
+      },
+      child: AnimatedContainer(
+        duration: const Duration(seconds: 1),
+        curve: Curves.easeInOutBack,
+        decoration: BoxDecoration(
+            color:
+                isGreen ? Colors.green : const Color.fromARGB(255, 23, 23, 23),
+            border:
+                Border.all(color: Colors.white, width: !isGreen ? 1.5 : 0.01)),
+        alignment: Alignment.center,
+        width: isGreen ? gw : w,
+        height: isGreen ? gh : h,
+        child: Text(
+          text.toString(),
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w200),
+        ),
+      ),
+    );
+  }
+
+  AnimatedContainer kora() {
+    return AnimatedContainer(
+      duration: const Duration(seconds: 2),
+      alignment: Alignment.center,
+      width: 82,
+      height: 82,
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.green,
+        color: Color.fromARGB(255, 35, 35, 35),
       ),
-    ),
-  );
-}
-
-AnimatedContainer card(border, text, type) {
-  return AnimatedContainer(
-    duration: const Duration(seconds: 4),
-    padding: const EdgeInsets.all(40),
-    alignment: Alignment.centerLeft,
-    width: 350,
-    height: 241,
-    decoration: BoxDecoration(
-      color: const Color.fromARGB(255, 35, 35, 35),
-      border: BorderDirectional(
-        bottom: BorderSide(
+      child: Container(
+        width: 18,
+        height: 18,
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
           color: Colors.green,
-          width: border ? 5 : 0.01,
         ),
       ),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        type == 'dev'
-            ? Image.asset('assets/Vector.png')
-            : type == 'weird'
-                ? Image.asset('assets/Vector1.png')
-                : Image.asset('assets/Vector2.png'),
-        Text(
-          text,
-          style: const TextStyle(
-              fontSize: 36, color: Color.fromARGB(255, 87, 87, 87)),
-        ),
-      ],
-    ),
-  );
+    );
+  }
 }
